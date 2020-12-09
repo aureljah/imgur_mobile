@@ -1,0 +1,10 @@
+{
+  "name": "Photo Gallery NG Capacitor",
+  "integrations": {
+    "capacitor": {
+      "enabled": false
+    },
+    "cordova": {}
+  },
+  "type": "angular"
+}
