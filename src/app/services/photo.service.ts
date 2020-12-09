@@ -60,7 +60,7 @@ export class PhotoService {
         correctOrientation: true,
         targetWidth: 1024,
         targetHeight: 1024,
-        allowEdit: true,
+        //allowEdit: true,
         cameraDirection: self.camera.Direction.FRONT,
       };
       await self.camera.getPicture(options).then(async (imagePath) => {
@@ -73,7 +73,7 @@ export class PhotoService {
     else {
       try{
         const options = {
-            maximumImagesCount: 3-self.photos.length,   // remaining (max 3, min 0) images maximum
+            maximumImagesCount: 5,
             width: 1024,                                // 1024px max width
             height: 1024,                               // 1024px max height
             quality: 100,                               // quality 100%

@@ -46,13 +46,13 @@ export class Tab2Page {
     let actionSheet = await self.actionSheetController.create({
         header: "Ajouter photo",
         buttons: [
-            {
-                text: "Gallerie",
+            /*{
+                text: "Gallerie (multiple)",
                 icon: 'edit',
                 handler: () => {
                     self.photoService.takePicture(false);
                 }
-            },
+            },*/
             {
                 text: "Camera",
                 handler: () => {
@@ -60,7 +60,7 @@ export class Tab2Page {
                 }
             },
             {
-                text: "Gallerie (only one)",
+                text: "Gallerie",
                 handler: () => {
                     self.photoService.takePicture(true, self.camera.PictureSourceType.PHOTOLIBRARY);
                 }
