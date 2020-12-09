@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Plugins, CameraResultType, Capacitor, FilesystemDirectory, CameraPhoto, CameraSource } from '@capacitor/core';
 import { Platform } from '@ionic/angular';
-
-const { Camera, Filesystem, Storage } = Plugins;
+import { Storage } from '@ionic/storage';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoService {
-  public photos: Photo[] = [];
-  private PHOTO_STORAGE: string = "photos";
-  private platform: Platform;
+  public photos: any[] = [];
 
-  constructor(platform: Platform) {
-    this.platform = platform;
+  constructor(public platform: Platform,
+    public storage: Storage,
+    public camera: Camera,
+    public imagePicker: ImagePicker
+    ) {
    }
 
-  public async loadSaved() {
+  /*public async loadSaved() {
     // Retrieve cached photo array data
-    const photoList = await Storage.get({ key: this.PHOTO_STORAGE });
-    this.photos = JSON.parse(photoList.value) || [];
+    //const photoList = await Storage.get({ key: this.PHOTO_STORAGE });
+    //this.photos = JSON.parse(photoList.value) || [];
 
     // If running on the web...
     if (!this.platform.is('hybrid')) {
@@ -35,7 +36,7 @@ export class PhotoService {
         photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
       }
     }
-  }
+  }*/
 
   /* Use the device camera to take a photo:
   // https://capacitor.ionicframework.com/docs/apis/camera
@@ -46,28 +47,68 @@ export class PhotoService {
   // Store a reference to all photo filepaths using Storage API:
   // https://capacitor.ionicframework.com/docs/apis/storage
   */
-  public async addNewToGallery() {
-    // Take a photo
-    const capturedPhoto = await Camera.getPhoto({
-      resultType: CameraResultType.Uri, // file-based data; provides best performance
-      source: CameraSource.Camera, // automatically take a new photo with the camera
-      quality: 100 // highest quality (0 to 100)
-    });
+  public async takePicture(useCameraPlugin: boolean, sourceType=null) {
+    const self = this;
+    if(useCameraPlugin){
+      // Take a photo
+      // Create options for the Camera Dialog
+      const options = {
+        quality: 100,
+        destinationType: self.camera.DestinationType.FILE_URI,
+        sourceType: sourceType,
+        saveToPhotoAlbum: false,
+        correctOrientation: true,
+        targetWidth: 1024,
+        targetHeight: 1024,
+        allowEdit: true,
+        cameraDirection: self.camera.Direction.FRONT,
+      };
+      await self.camera.getPicture(options).then(async (imagePath) => {
+        console.log("camera: imagePath: ", imagePath);
+        self.photos.push(imagePath);
+      }, (err) => {
+        console.log('Error: ', err);
+      });
+    }
+    else {
+      try{
+        const options = {
+            maximumImagesCount: 3-self.photos.length,   // remaining (max 3, min 0) images maximum
+            width: 1024,                                // 1024px max width
+            height: 1024,                               // 1024px max height
+            quality: 100,                               // quality 100%
+            outputType: 0                               // URI required
+        };
+        await self.imagePicker.getPictures(options).then( async (resultImages) => {
+            // authorization popup makes resultImages to be a string "OK"
+            if(typeof resultImages !== "string" && resultImages.length > 0){
+                for (let imageURI of resultImages) {
+                  console.log("imagePicker: imageURI: ", imageURI);
+                    self.photos.push(imageURI);
+                }
+            }
+        }, (error) => {
+            console.log(error);
+        });
+      }catch(error){
+          console.log("Error while selecting multiple images : "+error);
+      }
+    }
     
-    const savedImageFile = await this.savePicture(capturedPhoto);
+    //const savedImageFile = await this.savePicture(capturedPhoto);
 
     // Add new photo to Photos array
-    this.photos.unshift(savedImageFile);
+    //this.photos.unshift(savedImageFile);
 
     // Cache all photo data for future retrieval
-    Storage.set({
+    /*Storage.set({
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos)
-    });
+    });*/
   }
 
   // Save picture to file on device
-  private async savePicture(cameraPhoto: CameraPhoto) {
+  /*private async savePicture(cameraPhoto: CameraPhoto) {
     // Convert photo to base64 format, required by Filesystem API to save
     const base64Data = await this.readAsBase64(cameraPhoto);
 
@@ -95,10 +136,10 @@ export class PhotoService {
         webviewPath: cameraPhoto.webPath
       };
     }
-  }
+  }*/
 
   // Read camera photo into base64 format based on the platform the app is running on
-  private async readAsBase64(cameraPhoto: CameraPhoto) {
+  /*private async readAsBase64(cameraPhoto: CameraPhoto) {
     // "hybrid" will detect Cordova or Capacitor
     if (this.platform.is('hybrid')) {
       // Read the file into base64 format
@@ -143,10 +184,10 @@ export class PhotoService {
         resolve(reader.result);
     };
     reader.readAsDataURL(blob);
-  });
+  });*/
 }
 
-export interface Photo {
+/*export interface Photo {
   filepath: string;
   webviewPath: string;
-}
+}*/
