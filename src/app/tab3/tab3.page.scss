@@ -1,3 +1,57 @@
 ion-content ion-toolbar {
   --background: translucent;
 }
+
+#account_avatar {
+  width:100% !important;  
+  height : 100% !important;  
+  max-width: 33vw !important; 
+  max-height: 33vw !important;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+}
+
+#account_username {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+  text-align: center;
+  font-size: 200%;
+  color: white;
+  font-weight: 500;
+}
+
+h2 {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5%;
+  text-align: center;
+  font-size: 120%;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 100;
+}
+
+ion-card {
+  background-color: rgb(145, 165, 198);
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 5%;
+}
+
+h3 {
+  font-size: 120%;
+  color: rgb(205, 225, 255);
+  font-weight: bold;
+  margin-top: 5%;
+}
+
+p {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+ion-button {
+  margin-left: 10px;
+  margin-right: 10px;
+  vertical-align: middle;
+}

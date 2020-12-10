@@ -14,9 +14,7 @@ const client_secret = "58eaf9038953015a73b717e19a3c35925e195b4e";
 export class ImgurApiService {
   access_token: string = undefined;
   account_username: string = undefined;
-
   account_info: accountInfo = undefined;
-
   viral_images: imageInfo[] = [];
   account_images: imageInfo[] = [];
 
@@ -105,6 +103,8 @@ export class ImgurApiService {
           /* exemple success url
               https://imgur.com/#access_token=f23e82b4e0b7d14d43dc8fbbdd7b6eb145decd95&expires_in=315360000&token_type=bearer&refresh_token=8ee853a9b0602be54953064a9a186868ba2c1a3d&account_username=Aureljah&account_id=142233583
           */
+
+          this.request_account_info()
 
           //sub.unsubscribe();
           resolved = true;
@@ -225,6 +225,7 @@ export class ImgurApiService {
     return new Promise<any>((resolve, reject) => {
       this.http.get("https://api.imgur.com/3/account/" + this.account_username, {headers: {Authorization: "Client-ID " + client_id}}).pipe(
       ).subscribe(response => {
+        this.account_info = new accountInfo(this.account_username, response);
         resolve(response);
       }, error => {
         reject(error);
