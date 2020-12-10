@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Browse
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,9 +13,44 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-label *ngIf="imgurApiService.isConnected() === false">Non connecté</ion-label>
-  <ion-label *ngIf="imgurApiService.isConnected() === true">Connecté: {{imgurApiService.account_username}}</ion-label>
+  <app-explore-container name="Tab 1 page"></app-explore-container>
 
-  <ion-button (click)="connectAccount()">Se connecter via imgur</ion-button>
-  <ion-button *ngIf="imgurApiService.isConnected() === true" (click)="get_account_image()">Debug get_account_image</ion-button>
+<ion-card>
+    <img src="assets/img.png" />
+    <ion-card-header>
+      <ion-card-title>A simple image</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="ion-no-padding" class="ion-no-margin">
+      <ion-grid class="ion-no-padding" class="ion-no-margin">
+        <ion-row>
+          <ion-col class="ion-no-padding">
+            <ion-item class="ion-text-left" lines="none">
+              <ion-icon name="arrow-up-circle-outline" size="small"></ion-icon>
+              <ion-label>123</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col class="ion-no-padding">
+            <ion-item lines="none">
+              <ion-icon name="arrow-down-circle-outline" size="small"></ion-icon>
+              <ion-label>100</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col class="ion-no-padding">
+            <ion-item lines="none">
+              <ion-icon name="chatbubble-ellipses-outline" size="small"></ion-icon>
+              <ion-label>100</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col class="ion-no-padding">
+            <ion-item lines="none">
+              <ion-icon name="eye-outline" size="small"></ion-icon>
+              <ion-label>100</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>       
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  
 </ion-content>
