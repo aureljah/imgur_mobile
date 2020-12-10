@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
+import { Platform } from '@ionic/angular';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { ImgurApiService } from '../services/imgur-api.service';
 
@@ -12,6 +13,7 @@ export class HomePage implements OnInit {
 
   constructor(
     public router: Router,
+    public platform: Platform,
     public loadingController: LoadingController,
     public alertController: AlertController,
     public imgurApiService: ImgurApiService,
@@ -38,6 +40,13 @@ export class HomePage implements OnInit {
       message: "Connexion..."
     });
     await loading.present();
+
+    if (!this.platform.is("cordova")) {
+      await this.imgurApiService.load_viral_images();
+      await loading.dismiss();
+      this.router.navigate([""]);
+      return;
+    }
 
     this.imgurApiService.login().then(async (res) => {
       loading.dismiss();
