@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ImgurApiService } from '../services/imgur-api.service';
 import { accountInfo } from '../models/accountInfo';
+import { imageInfo } from '../models/imageInfo';
 
 @Component({
   selector: 'app-tab1',
@@ -14,4 +15,11 @@ export class Tab1Page {
     public imgurApiService: ImgurApiService
   ) {}
 
+  ionViewWillEnter() {
+
+  }
+
+  seeCard(image: imageInfo) {
+    console.log("seeCard: ", image);
+  }
 }

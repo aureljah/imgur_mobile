@@ -3,6 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { InAppBrowser, InAppBrowserEventType } from '@ionic-native/in-app-browser/ngx';
 import { Storage } from '@ionic/storage';
 import { accountInfo } from '../models/accountInfo';
+import { imageInfo } from '../models/imageInfo';
 
 const client_id = "5f5edb6cf60b3bf";
 const client_secret = "58eaf9038953015a73b717e19a3c35925e195b4e";
@@ -15,6 +16,8 @@ export class ImgurApiService {
   account_username: string = undefined;
 
   account_info: accountInfo = undefined;
+
+  viral_images: imageInfo[] = [];
 
   constructor(
     public http: HttpClient,
@@ -54,6 +57,18 @@ export class ImgurApiService {
     let res_account = await self.request_account_info();
     self.account_info = new accountInfo(self.account_username, res_account);
     console.log(self.account_info);
+
+    let gallery = await self.request_get_hot_images();
+    console.log("request_get_hot_images: res: ", gallery);
+    if (gallery && gallery.data) {
+      for (let i = 0 ; i < gallery.data.length ; i++) {
+        let elem = gallery.data[i];
+        let img = new imageInfo(elem);
+        if (img.animated !== true) {
+          self.viral_images.push(img);
+        }
+      }
+    }
   }
 
   login() {
@@ -150,6 +165,17 @@ export class ImgurApiService {
   request_all_account_images(page: number = 0) {
     return new Promise<any>((resolve, reject) => {
         this.http.get("https://api.imgur.com/3/account/"+this.account_username+"/images/" + page.toString(), {headers: {Authorization: "Bearer " + this.access_token}}).pipe(
+        ).subscribe(response => {
+            resolve(response);
+        }, error => {
+            reject(error);
+        });
+    });
+  }
+
+  request_get_hot_images(page: number = 0) {
+    return new Promise<any>((resolve, reject) => {
+        this.http.get("https://api.imgur.com/3/gallery/hot/viral/day/" + page.toString(), {headers: {Authorization: "Client-ID " + client_id}}).pipe(
         ).subscribe(response => {
             resolve(response);
         }, error => {

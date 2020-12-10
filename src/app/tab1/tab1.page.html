@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Browse
+      Image viral
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,43 +13,48 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <div class="list-image" *ngFor="let image of imgurApiService.viral_images">
+    <ion-card (click)="seeCard(image)">
+      <img [src]="image.link" />
+      <ion-card-header>
+        <ion-card-title>{{image.title}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-no-padding" class="ion-no-margin">
+        <ion-grid class="ion-no-padding" class="ion-no-margin">
+          <ion-row>
+            <ion-col class="ion-no-padding">
+              <ion-item class="ion-text-left" lines="none">
+                <!-- Up vote -->
+                <ion-icon name="arrow-up-circle-outline" size="small"></ion-icon>
+                <ion-label>{{image.ups}}</ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <ion-item lines="none">
+                <!-- Down vote -->
+                <ion-icon name="arrow-down-circle-outline" size="small"></ion-icon>
+                <ion-label>{{image.downs}}</ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <ion-item lines="none">
+                <!-- Comments -->
+                <ion-icon name="chatbubble-ellipses-outline" size="small"></ion-icon>
+                <ion-label>{{image.comment_count}}</ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col class="ion-no-padding">
+              <ion-item lines="none">
+                <!-- Views -->
+                <ion-icon name="eye-outline" size="small"></ion-icon>
+                <ion-label>{{image.views}}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
-<ion-card>
-    <img src="assets/img.png" />
-    <ion-card-header>
-      <ion-card-title>A simple image</ion-card-title>
-    </ion-card-header>
-    <ion-card-content class="ion-no-padding" class="ion-no-margin">
-      <ion-grid class="ion-no-padding" class="ion-no-margin">
-        <ion-row>
-          <ion-col class="ion-no-padding">
-            <ion-item class="ion-text-left" lines="none">
-              <ion-icon name="arrow-up-circle-outline" size="small"></ion-icon>
-              <ion-label>123</ion-label>
-            </ion-item>
-          </ion-col>
-          <ion-col class="ion-no-padding">
-            <ion-item lines="none">
-              <ion-icon name="arrow-down-circle-outline" size="small"></ion-icon>
-              <ion-label>100</ion-label>
-            </ion-item>
-          </ion-col>
-          <ion-col class="ion-no-padding">
-            <ion-item lines="none">
-              <ion-icon name="chatbubble-ellipses-outline" size="small"></ion-icon>
-              <ion-label>100</ion-label>
-            </ion-item>
-          </ion-col>
-          <ion-col class="ion-no-padding">
-            <ion-item lines="none">
-              <ion-icon name="eye-outline" size="small"></ion-icon>
-              <ion-label>100</ion-label>
-            </ion-item>
-          </ion-col>
-        </ion-row>       
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
   
 </ion-content>
