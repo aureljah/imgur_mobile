@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { InAppBrowser, InAppBrowserEventType } from '@ionic-native/in-app-browser/ngx';
+import { Router, NavigationExtras } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { accountInfo } from '../models/accountInfo';
 import { imageInfo } from '../models/imageInfo';
@@ -20,6 +21,7 @@ export class ImgurApiService {
 
   constructor(
     public http: HttpClient,
+    public router: Router,
     public iab: InAppBrowser,
     public storage: Storage
   ) { }
@@ -29,6 +31,15 @@ export class ImgurApiService {
       return true;
     }
     return false;
+  }
+
+  logout() {
+    this.access_token = undefined;
+    this.account_username = undefined;
+    this.account_info = undefined;
+    this.viral_images = [];
+    this.account_images = [];
+    this.router.navigate(["home"]);
   }
 
   async tryAutoLogin() {
