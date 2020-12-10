@@ -52,5 +52,10 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-label *ngIf="imgurApiService.isConnected() === false">Non connecté</ion-label>
+ <ion-label *ngIf="imgurApiService.isConnected() === true">Connecté: {{imgurApiService.account_username}}</ion-label>
+ 
+ <ion-button (click)="connectAccount()">Se connecter via imgur</ion-button>
+ <ion-button *ngIf="imgurApiService.isConnected() === true" (click)="get_account_info()">Debug get_account_image</ion-button>
   
 </ion-content>

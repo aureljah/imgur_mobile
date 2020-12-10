@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { InAppBrowser, InAppBrowserEventType } from '@ionic-native/in-app-browser/ngx';
-import { accountInfo } from './../models/accountInfo';
+import { strict } from 'assert';
+import { accountInfo } from '../models/accountInfo';
 
 const client_id = "5f5edb6cf60b3bf";
 const client_secret = "58eaf9038953015a73b717e19a3c35925e195b4e";
@@ -12,8 +13,6 @@ const client_secret = "58eaf9038953015a73b717e19a3c35925e195b4e";
 export class ImgurApiService {
   access_token: string = undefined;
   account_username: string = undefined;
-
-  account_info: accountInfo = undefined;
 
   constructor(
     public http: HttpClient,
@@ -104,4 +103,16 @@ export class ImgurApiService {
         });
     });
   }
-}
+
+  // Account: Acount Base info
+  request_account_info() {
+    return new Promise<any>((resolve, reject) => {
+      this.http.get("https://api.imgur.com/3/account/" + this.account_username, {headers: {Authorization: "Client-ID " + client_id}}).pipe(
+      ).subscribe(response => {
+        resolve(response);
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+};
