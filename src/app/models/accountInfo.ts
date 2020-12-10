@@ -21,7 +21,7 @@ export class accountInfo {
             this.avatar = data.avatar;
             this.reputation = data.reputation;
             this.reputation_name = data.reputation_name;
-            this.created = data.created;
+            this.created = data.created * 1000;
             this.pro_expiration = data.expiration;
         }
     }
