@@ -9,7 +9,7 @@ import { File } from '@ionic-native/file/ngx';
   providedIn: 'root'
 })
 export class PhotoService {
-  public photos: any[] = [];
+  //public photos: any[] = [];
 
   constructor(public platform: Platform,
     public storage: Storage,
@@ -51,35 +51,38 @@ export class PhotoService {
   */
   public async takePicture(useCameraPlugin: boolean, sourceType=null) {
     const self = this;
-    if(useCameraPlugin){
-      // Take a photo
-      // Create options for the Camera Dialog
-      const options = {
-        quality: 100,
-        destinationType: self.camera.DestinationType.DATA_URL,
-        sourceType: sourceType,
-        encodingType: self.camera.EncodingType.JPEG,
-        saveToPhotoAlbum: false,
-        correctOrientation: true,
-        targetWidth: 1024,
-        targetHeight: 1024,
-        //allowEdit: true,
-        cameraDirection: self.camera.Direction.FRONT,
-      };
-      await self.camera.getPicture(options).then(async (imagePath) => {
-        //console.log("camera: imagePath: ", imagePath);
-        let img_b64 = 'data:image/jpeg;base64,' + imagePath;
-        self.photos.push(img_b64);
-      }, (err) => {
-        console.log('Error: ', err);
-      });
-    }
+    return new Promise<any>(async (resolve, reject) => {
+      if(useCameraPlugin){
+        // Take a photo
+        // Create options for the Camera Dialog
+        const options = {
+          quality: 100,
+          destinationType: self.camera.DestinationType.DATA_URL,
+          sourceType: sourceType,
+          encodingType: self.camera.EncodingType.JPEG,
+          saveToPhotoAlbum: false,
+          correctOrientation: true,
+          targetWidth: 1024,
+          targetHeight: 1024,
+          //allowEdit: true,
+          cameraDirection: self.camera.Direction.FRONT,
+        };
+        await self.camera.getPicture(options).then(async (imagePath) => {
+          //console.log("camera: imagePath: ", imagePath);
+          let img_b64 = 'data:image/jpeg;base64,' + imagePath;
+          //self.photos.push(img_b64);
+          resolve(imagePath);
+        }, (err) => {
+          console.log('Error: ', err);
+        });
+      }
+    });
   }
 
   // Delete picture by removing it from reference data and the filesystem
   public async deletePicture(photo, position: number) {
     // Remove this photo from the Photos reference data array
-    this.photos.splice(position, 1);
+    //this.photos.splice(position, 1);
 
     // Update photos array cache by overwriting the existing photo array
     /*Storage.set({

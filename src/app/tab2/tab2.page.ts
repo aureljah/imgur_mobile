@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { AlertController, ActionSheetController } from '@ionic/angular';
+import { ImgurApiService } from '../services/imgur-api.service';
 import { PhotoService } from '../services/photo.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { imageInfo } from '../models/imageInfo';
 
 @Component({
   selector: 'app-tab2',
@@ -11,6 +13,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 export class Tab2Page {
 
   constructor(public photoService: PhotoService,
+            public imgurApiService: ImgurApiService,
+            public alertController: AlertController,
             public actionSheetController: ActionSheetController,
             public camera: Camera,
             ) {}
@@ -19,7 +23,15 @@ export class Tab2Page {
     //await this.photoService.loadSaved();
   }
 
-  public async showActionSheet(photo, position: number) {
+  ionViewWillEnter() {
+    this.imgurApiService.reload_account_images();
+  }
+
+  seeCard(image: imageInfo) {
+    console.log("seeCard: ", image);
+  }
+
+  /*public async showActionSheet(photo, position: number) {
     const actionSheet = await this.actionSheetController.create({
       header: 'Photos',
       buttons: [{
@@ -39,7 +51,7 @@ export class Tab2Page {
       }]
     });
     await actionSheet.present();
-  }
+  }*/
 
   async addPicture() {
     const self = this;
@@ -56,13 +68,17 @@ export class Tab2Page {
             {
                 text: "Camera",
                 handler: () => {
-                    self.photoService.takePicture(true, self.camera.PictureSourceType.CAMERA);
+                    self.photoService.takePicture(true, self.camera.PictureSourceType.CAMERA).then((img) => {
+                      self.alert_upload(img);
+                    });
                 }
             },
             {
                 text: "Gallerie",
                 handler: () => {
-                    self.photoService.takePicture(true, self.camera.PictureSourceType.PHOTOLIBRARY);
+                    self.photoService.takePicture(true, self.camera.PictureSourceType.PHOTOLIBRARY).then((img) => {
+                      self.alert_upload(img);
+                    });
                 }
             },
             {
@@ -72,5 +88,69 @@ export class Tab2Page {
         ]
     });
     await actionSheet.present();
-}
+  }
+
+  async alert_upload(img) {
+    const self = this;
+    let alert = await this.alertController.create({
+      header: "",
+      inputs: [
+        {
+          name: 'title',
+          type: 'text',
+          placeholder: 'Titre'
+        },
+        {
+          name: 'description',
+          type: 'text',
+          placeholder: 'Description'
+        },
+        {
+          name: 'img_name',
+          type: 'text',
+          placeholder: "Nom de l'image"
+        },
+      ],
+      buttons: [
+        {
+          text: "Upload image",
+          handler: (data) => {
+            console.log("alert_upload: data: ", data);
+            if (!data.title) {
+              self.genericAlert("Error", "Title is required")
+              return;
+            }
+            if (!data.description) {
+              self.genericAlert("Error", "Description is required")
+              return;
+            }
+            if (!data.img_name) {
+              self.genericAlert("Error", "An image name is required")
+              return;
+            }
+
+            self.imgurApiService.request_upload_image(img, "base64", data.img_name, data.title, data.description).then(() => {
+              self.imgurApiService.reload_account_images();
+            });
+          }
+        },
+        {
+          text: "Annuler",
+          role: 'Cancel'
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async genericAlert(header: string, msg: string) {
+    let alert = await this.alertController.create({
+      header: header,
+      message: msg,
+      buttons: [{
+        text: "OK"
+      }]
+    });
+    await alert.present();
+  }
 }

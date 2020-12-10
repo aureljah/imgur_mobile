@@ -18,6 +18,7 @@ export class ImgurApiService {
   account_info: accountInfo = undefined;
 
   viral_images: imageInfo[] = [];
+  account_images: imageInfo[] = [];
 
   constructor(
     public http: HttpClient,
@@ -58,17 +59,9 @@ export class ImgurApiService {
     self.account_info = new accountInfo(self.account_username, res_account);
     console.log(self.account_info);
 
-    let gallery = await self.request_get_hot_images();
-    console.log("request_get_hot_images: res: ", gallery);
-    if (gallery && gallery.data) {
-      for (let i = 0 ; i < gallery.data.length ; i++) {
-        let elem = gallery.data[i];
-        let img = new imageInfo(elem);
-        if (img.animated !== true) {
-          self.viral_images.push(img);
-        }
-      }
-    }
+    self.load_viral_images();
+
+    self.reload_account_images();
   }
 
   login() {
@@ -161,6 +154,38 @@ export class ImgurApiService {
     return value;
   }
 
+  async load_viral_images(page: number = 0) {
+    let gallery = await this.request_get_viral_images(page);
+    console.log("request_get_viral_images: res: ", gallery);
+    if (gallery && gallery.data) {
+      let img_list: imageInfo[] = [];
+      for (let i = 0 ; i < gallery.data.length ; i++) {
+        let elem = gallery.data[i];
+        let img = new imageInfo(elem);
+        if (img.animated !== true) {
+          img_list.push(img);
+        }
+      }
+      this.viral_images = img_list;
+    }
+  }
+
+  async reload_account_images() {
+    let res = await this.request_all_account_images();
+    console.log("request_all_account_images: ", res);
+    if (res && res.data) {
+      let img_list: imageInfo[] = [];
+      for (let i = 0 ; i < res.data.length ; i++) {
+        let elem = res.data[i];
+        let img = new imageInfo(elem);
+        if (img.animated !== true) {
+          img_list.push(img);
+        }
+      }
+      this.account_images = img_list;
+    }
+  }
+
   // Authorization: Bearer YOUR_ACCESS_TOKEN
   request_all_account_images(page: number = 0) {
     return new Promise<any>((resolve, reject) => {
@@ -173,7 +198,7 @@ export class ImgurApiService {
     });
   }
 
-  request_get_hot_images(page: number = 0) {
+  request_get_viral_images(page: number = 0) {
     return new Promise<any>((resolve, reject) => {
         this.http.get("https://api.imgur.com/3/gallery/hot/viral/day/" + page.toString(), {headers: {Authorization: "Client-ID " + client_id}}).pipe(
         ).subscribe(response => {
@@ -181,6 +206,17 @@ export class ImgurApiService {
         }, error => {
             reject(error);
         });
+    });
+  }
+
+  request_upload_image(img, type: string, name: string, title: string, description: string) {
+    return new Promise<any>((resolve, reject) => {
+      this.http.post("https://api.imgur.com/3/image", {image: img, type: type, name: name, title: title, description: description}, {headers: {Authorization: "Bearer " + this.access_token}}).pipe(
+      ).subscribe(response => {
+        resolve(response);
+      }, error => {
+        reject(error);
+      });
     });
   }
 
