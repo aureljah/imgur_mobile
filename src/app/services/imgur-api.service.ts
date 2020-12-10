@@ -15,9 +15,6 @@ export class ImgurApiService {
   access_token: string = undefined;
   account_username: string = undefined;
   account_info: accountInfo = undefined;
-
-  account_info: accountInfo = undefined;
-
   viral_images: imageInfo[] = [];
 
   constructor(
