@@ -39,6 +39,8 @@ export class ImgurApiService {
     this.account_info = undefined;
     this.viral_images = [];
     this.account_images = [];
+    this.storage.remove("access_token");
+    this.storage.remove("account_username");
     this.router.navigate(["home"]);
   }
 
