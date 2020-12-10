@@ -19,7 +19,7 @@ export class Tab2Page {
     //await this.photoService.loadSaved();
   }
 
-  /*public async showActionSheet(photo, position: number) {
+  public async showActionSheet(photo, position: number) {
     const actionSheet = await this.actionSheetController.create({
       header: 'Photos',
       buttons: [{
@@ -39,7 +39,7 @@ export class Tab2Page {
       }]
     });
     await actionSheet.present();
-  }*/
+  }
 
   async addPicture() {
     const self = this;

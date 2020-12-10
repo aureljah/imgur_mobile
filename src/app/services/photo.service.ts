@@ -3,6 +3,7 @@ import { Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class PhotoService {
   constructor(public platform: Platform,
     public storage: Storage,
     public camera: Camera,
+    public file: File,
     public imagePicker: ImagePicker
     ) {
    }
@@ -54,8 +56,9 @@ export class PhotoService {
       // Create options for the Camera Dialog
       const options = {
         quality: 100,
-        destinationType: self.camera.DestinationType.FILE_URI,
+        destinationType: self.camera.DestinationType.DATA_URL,
         sourceType: sourceType,
+        encodingType: self.camera.EncodingType.JPEG,
         saveToPhotoAlbum: false,
         correctOrientation: true,
         targetWidth: 1024,
@@ -64,37 +67,34 @@ export class PhotoService {
         cameraDirection: self.camera.Direction.FRONT,
       };
       await self.camera.getPicture(options).then(async (imagePath) => {
-        console.log("camera: imagePath: ", imagePath);
-        self.photos.push(imagePath);
+        //console.log("camera: imagePath: ", imagePath);
+        let img_b64 = 'data:image/jpeg;base64,' + imagePath;
+        self.photos.push(img_b64);
       }, (err) => {
         console.log('Error: ', err);
       });
     }
-    else {
-      try{
-        const options = {
-            maximumImagesCount: 5,
-            width: 1024,                                // 1024px max width
-            height: 1024,                               // 1024px max height
-            quality: 100,                               // quality 100%
-            outputType: 0                               // URI required
-        };
-        await self.imagePicker.getPictures(options).then( async (resultImages) => {
-            // authorization popup makes resultImages to be a string "OK"
-            if(typeof resultImages !== "string" && resultImages.length > 0){
-                for (let imageURI of resultImages) {
-                  console.log("imagePicker: imageURI: ", imageURI);
-                    self.photos.push(imageURI);
-                }
-            }
-        }, (error) => {
-            console.log(error);
-        });
-      }catch(error){
-          console.log("Error while selecting multiple images : "+error);
-      }
-    }
-    
+  }
+
+  // Delete picture by removing it from reference data and the filesystem
+  public async deletePicture(photo, position: number) {
+    // Remove this photo from the Photos reference data array
+    this.photos.splice(position, 1);
+
+    // Update photos array cache by overwriting the existing photo array
+    /*Storage.set({
+      key: this.PHOTO_STORAGE,
+      value: JSON.stringify(this.photos)
+    });*/
+
+    // delete photo file from filesystem
+    /*const filename = photo.filepath.substr(photo.filepath.lastIndexOf('/') + 1);
+    await Filesystem.deleteFile({
+      path: filename,
+      directory: FilesystemDirectory.Data
+    });*/
+  }
+
     //const savedImageFile = await this.savePicture(capturedPhoto);
 
     // Add new photo to Photos array
@@ -105,7 +105,7 @@ export class PhotoService {
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos)
     });*/
-  }
+  //}
 
   // Save picture to file on device
   /*private async savePicture(cameraPhoto: CameraPhoto) {
@@ -156,25 +156,6 @@ export class PhotoService {
 
       return await this.convertBlobToBase64(blob) as string;  
     }
-  }
-
-  // Delete picture by removing it from reference data and the filesystem
-  public async deletePicture(photo: Photo, position: number) {
-    // Remove this photo from the Photos reference data array
-    this.photos.splice(position, 1);
-
-    // Update photos array cache by overwriting the existing photo array
-    Storage.set({
-      key: this.PHOTO_STORAGE,
-      value: JSON.stringify(this.photos)
-    });
-
-    // delete photo file from filesystem
-    const filename = photo.filepath.substr(photo.filepath.lastIndexOf('/') + 1);
-    await Filesystem.deleteFile({
-      path: filename,
-      directory: FilesystemDirectory.Data
-    });
   }
 
   convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
