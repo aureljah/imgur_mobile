@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { InAppBrowser, InAppBrowserEventType } from '@ionic-native/in-app-browser/ngx';
-import { strict } from 'assert';
+import { Storage } from '@ionic/storage';
 import { accountInfo } from '../models/accountInfo';
 
 const client_id = "5f5edb6cf60b3bf";
@@ -14,9 +14,12 @@ export class ImgurApiService {
   access_token: string = undefined;
   account_username: string = undefined;
 
+  account_info: accountInfo = undefined;
+
   constructor(
     public http: HttpClient,
-    public iab: InAppBrowser
+    public iab: InAppBrowser,
+    public storage: Storage
   ) { }
 
   isConnected() {
@@ -26,8 +29,54 @@ export class ImgurApiService {
     return false;
   }
 
+  async tryAutoLogin() {
+    const self = this;
+    let token = await self.storage.get("access_token");
+    if (token) {
+      let username = await self.storage.get("account_username");
+      if (username) {
+        this.access_token = token;
+        this.account_username = username;
+
+        this.onLoginTask();
+        return true;
+      }
+      return false;
+    }
+    else {
+      return false;
+    }
+  }
+
+  // put all task/request that need to be done before redirect
+  async onLoginTask() {
+    const self = this;
+    let res_account = await self.request_account_info();
+    self.account_info = new accountInfo(self.account_username, res_account);
+    console.log(self.account_info);
+  }
+
+  login() {
+    const self = this;
+    return new Promise<any>((resolve, reject) => {
+      this.authorize_account().then(async (res) => {
+        console.log("authorize_account: RESOLVED !");
+        self.storage.set("access_token", self.access_token);
+        self.storage.set("account_username", self.account_username);
+
+        await self.onLoginTask();
+
+        resolve(true);
+      }).catch((err) => {
+        console.error("authorize_account: REJECTED !");
+        resolve(false);
+      });
+    });
+  }
+
   authorize_account() {
     return new Promise<any>((resolve, reject) => {
+      let resolved = false;
       let browser = this.iab.create("https://api.imgur.com/oauth2/authorize?client_id="+client_id+"&response_type=token");
       let sub = browser.on("loadstart").subscribe((params) => {
         console.log("loadstart: params: ", params);
@@ -50,12 +99,14 @@ export class ImgurApiService {
           */
 
           //sub.unsubscribe();
+          resolved = true;
           browser.close();
           resolve();
         }
         else if (params.url.includes("error")) {
           // probably refused access
           //sub.unsubscribe();
+          resolved = true;
           browser.close();
           reject();
         }
@@ -64,6 +115,9 @@ export class ImgurApiService {
         sub.unsubscribe();
         sub_exit.unsubscribe();
         console.log("exit: params: ", params);
+        if (resolved === false) {
+          reject();
+        }
       });
       /*browser.on("loadstop").subscribe((params) => {
         console.log("loadstop: params: ", params);
