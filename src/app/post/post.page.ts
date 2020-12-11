@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ActionSheetController } from '@ionic/angular';
+import { imageComment } from '../models/imageComment';
 import { imageInfo } from '../models/imageInfo';
 import { ImgurApiService } from '../services/imgur-api.service';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
@@ -14,6 +15,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 export class PostPage implements OnInit {
 
   image: imageInfo = undefined;
+  comments: imageComment[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -94,5 +96,13 @@ export class PostPage implements OnInit {
       ]
     });
     await alert.present();
+  }
+
+  ionViewWillEnter() {
+    this.imgurApiService.request_image_comments(this.image.id).then((coms) => {
+      this.comments = coms;
+    }).catch((err) => {
+      console.error(err);      
+    })
   }
 }

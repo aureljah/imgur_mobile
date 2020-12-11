@@ -5,6 +5,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { accountInfo } from '../models/accountInfo';
 import { imageInfo } from '../models/imageInfo';
+import { imageComment } from '../models/imageComment';
 
 const client_id = "5f5edb6cf60b3bf";
 const client_secret = "58eaf9038953015a73b717e19a3c35925e195b4e";
@@ -275,6 +276,19 @@ export class ImgurApiService {
       ).subscribe(response => {
         this.account_info = new accountInfo(this.account_username, response);
         resolve(response);
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+
+  request_image_comments(imageId) {
+    return new Promise<any>((resolve, reject) => {
+      this.http.get("https://api.imgur.com/3/gallery/" + imageId + "/comments/", {headers: {Authorization: "Client-ID " + client_id}}).pipe(
+      ).subscribe(response => {
+        let comments = imageComment.serializeComments(response);
+        console.log(comments);
+        resolve(comments);
       }, error => {
         reject(error);
       });

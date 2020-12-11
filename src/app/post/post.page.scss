@@ -3,7 +3,7 @@ ion-content {
 }
 
 ion-card {
-    ion-card-header {
+    #info_header {
         border-bottom: 1px solid rgb(145, 165, 198) !important;
     }
 }
@@ -20,4 +20,17 @@ h3 {
 
 .image_numbers_label {
     margin-top: -5px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#comment_text {
+    color: rgba(255, 255, 255, 1.0);
+}
+
+#comment_title, #info_title {
+    color: black;
+    margin-top: 11%;
+    margin-left: 6%;
+    font-size: x-large;
+    font-weight: 800;
 }
