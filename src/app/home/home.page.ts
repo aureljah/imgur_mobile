@@ -24,11 +24,19 @@ export class HomePage implements OnInit {
 
   async ionViewWillEnter() {
     let loading = await this.loadingController.create({
-      message: "Connexion..."
+      message: "Connecting..."
     });
     await loading.present();
 
-    let res = await this.imgurApiService.tryAutoLogin();
+    let res = await this.imgurApiService.tryAutoLogin().catch(async (err) => {
+
+      let alert = await this.alertController.create({
+        header: 'Error',
+        message: "Sorry, we are unable to connect to imgur"
+      });
+      await alert.present();
+      return;
+    });
     if (res === true) {
       this.router.navigate([""]);
     }
@@ -37,7 +45,7 @@ export class HomePage implements OnInit {
 
   async login() {
     let loading = await this.loadingController.create({
-      message: "Connexion..."
+      message: "Connecting..."
     });
     await loading.present();
 
@@ -55,16 +63,16 @@ export class HomePage implements OnInit {
       }
       else {
         let alert = await this.alertController.create({
-          header: 'Erreur',
-          message: "Nous avons pas pu nous connecter a imgur"
+          header: 'Error',
+          message: "Sorry, we are unable to connect to imgur"
         });
         await alert.present();
       }
     }).catch(async (err) => {
       loading.dismiss();
       let alert = await this.alertController.create({
-        header: 'Erreur',
-        message: "Une erreur inconnue est survenu"
+        header: 'Error',
+        message: "Sorry, we are unable to connect to imgur"
       });
       await alert.present();
     });

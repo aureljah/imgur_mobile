@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { accountInfo } from '../models/accountInfo';
 import { imageInfo } from '../models/imageInfo';
 import { imageComment } from '../models/imageComment';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 const client_id = "5f5edb6cf60b3bf";
 const client_secret = "58eaf9038953015a73b717e19a3c35925e195b4e";
@@ -25,6 +26,7 @@ export class ImgurApiService {
     public http: HttpClient,
     public router: Router,
     public iab: InAppBrowser,
+    public localNotifications: LocalNotifications,
     public storage: Storage
   ) { }
 
@@ -204,6 +206,8 @@ export class ImgurApiService {
   async reload_account_images() {
     let res = await this.request_all_account_images();
     console.log("request_all_account_images: ", res);
+    let res_submitted = await this.request_submitted_account_images();
+    console.log("request_submitted_account_images: ", res_submitted);
     if (res && res.data) {
       let img_list: imageInfo[] = [];
       for (let i = 0 ; i < res.data.length ; i++) {
@@ -221,6 +225,17 @@ export class ImgurApiService {
   request_all_account_images(page: number = 0) {
     return new Promise<any>((resolve, reject) => {
         this.http.get("https://api.imgur.com/3/account/"+this.account_username+"/images/" + page.toString(), {headers: {Authorization: "Bearer " + this.access_token}}).pipe(
+        ).subscribe(response => {
+            resolve(response);
+        }, error => {
+            reject(error);
+        });
+    });
+  }
+
+  request_submitted_account_images(page: number = 0) {
+    return new Promise<any>((resolve, reject) => {
+        this.http.get("https://api.imgur.com/3/account/"+this.account_username+"/submissions/" + page.toString(), {headers: {Authorization: "Bearer " + this.access_token}}).pipe(
         ).subscribe(response => {
             resolve(response);
         }, error => {

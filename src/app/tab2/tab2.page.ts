@@ -5,6 +5,7 @@ import { PhotoService } from '../services/photo.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { imageInfo } from '../models/imageInfo';
 import { NavigationExtras, Router } from '@angular/router';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @Component({
   selector: 'app-tab2',
@@ -17,6 +18,7 @@ export class Tab2Page {
   constructor(public photoService: PhotoService,
             private router: Router,
             public imgurApiService: ImgurApiService,
+            public localNotifications: LocalNotifications,
             public alertController: AlertController,
             public actionSheetController: ActionSheetController,
             public camera: Camera,
@@ -143,8 +145,35 @@ export class Tab2Page {
               return;
             }
 
+            let progress = 5;
+            self.localNotifications.schedule({
+              id: 1,
+              text: 'Your image is being uploaded..',
+              progressBar: { value: progress },
+              silent: true
+            });
+            let inter = setInterval(() => {
+              if (progress < 90) {
+                progress += 5;
+              }
+              else {
+                return;
+              }
+              self.localNotifications.update({
+                id: 1,
+                text: 'Your image is being uploaded..',
+                progressBar: { value: progress },
+                silent: true
+              });
+            }, 500);
             self.imgurApiService.request_upload_image(img, "base64", data.img_name, data.title, data.description).then(() => {
               self.imgurApiService.reload_account_images().then((res) => {
+                clearInterval(inter);
+                self.localNotifications.update({
+                  id: 1,
+                  text: 'Your image has been uploaded..',
+                  progressBar: { value: 100 }
+                });
                 self.display_list = self.imgurApiService.account_images;
               });
             });

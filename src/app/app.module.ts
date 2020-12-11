@@ -17,6 +17,7 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
     File,
     InAppBrowser,
     SocialSharing,
+    LocalNotifications,
     //Storage
     ],
   bootstrap: [AppComponent]
