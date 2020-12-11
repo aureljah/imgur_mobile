@@ -1,42 +1,43 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Profile
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content *ngIf="imgurApiService.isConnected() === true">
 
-<ion-content *ngIf="imgurApiService.isConnected() === true" >
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-col size="12">
-  <ion-card>
-    <ion-avatar id="account_avatar">
-      <img [src]="imgurApiService.account_info.avatar"/>
-    </ion-avatar>
-    <ion-label><h1 id="account_username">{{imgurApiService.account_info.username}}</h1></ion-label>
-    <ion-label><h2>{{imgurApiService.account_info.reputation}} PTS • {{imgurApiService.account_info.reputation_name}}</h2></ion-label>
-  </ion-card>
-
-  <ion-card>
-    <ion-label><h3>ABOUT</h3></ion-label>
-    <ion-label *ngIf="imgurApiService.account_info.bio === null"><p>Tell Imgur a little about yourself</p></ion-label>
-    <ion-label *ngIf="imgurApiService.account_info.bio !== null"><p>{{imgurApiService.account_info.bio}}</p></ion-label>
-    <ion-label><h3>JOINED</h3></ion-label>
-    <ion-label><p>{{imgurApiService.account_info.created | date : "MMMM dd, yyyy"}}</p></ion-label>
-    <ion-label><h3>INTERNET POINTS</h3></ion-label>
-    <ion-label><p>{{imgurApiService.account_info.reputation}}</p></ion-label>
-    <ion-label><h3>NOTORIETY</h3></ion-label>
-    <ion-label><p>{{imgurApiService.account_info.reputation_name}}</p></ion-label>
-  </ion-card>
-
-  <ion-button  expand="block" fill="solid" shape="undefined" size="large" color="dark" (click)="logout()">
-    logout
-  </ion-button>  
-</ion-col>
-
+  <ion-grid class="account_grid">
+    <ion-row class="parent_account_row"><ion-col size="12">
+      <ion-row>
+        <ion-col size="12">
+  
+          <!-- Account resume -->
+          <ion-card>
+            <ion-avatar id="account_avatar">
+              <img [src]="imgurApiService.account_info.avatar"/>
+            </ion-avatar>
+            <ion-label><h1 id="account_username">{{imgurApiService.account_info.username}}</h1></ion-label>
+            <ion-label><h2>{{imgurApiService.account_info.reputation}} PTS • {{imgurApiService.account_info.reputation_name}}</h2></ion-label>
+          </ion-card>
+    
+          <!-- Account info -->
+          <ion-card>
+            <ion-label><h3>ABOUT</h3></ion-label>
+            <ion-label *ngIf="imgurApiService.account_info.bio === null"><p>Tell Imgur a little about yourself</p></ion-label>
+            <ion-label *ngIf="imgurApiService.account_info.bio !== null"><p>{{imgurApiService.account_info.bio}}</p></ion-label>
+            <ion-label><h3>JOINED</h3></ion-label>
+            <ion-label><p>{{imgurApiService.account_info.created | date : "MMMM dd, yyyy"}}</p></ion-label>
+            <ion-label><h3>INTERNET POINTS</h3></ion-label>
+            <ion-label><p>{{imgurApiService.account_info.reputation}}</p></ion-label>
+            <ion-label><h3>NOTORIETY</h3></ion-label>
+            <ion-label><p>{{imgurApiService.account_info.reputation_name}}</p></ion-label>
+          </ion-card>
+    
+        </ion-col>
+      </ion-row>
+  
+      <!-- logout button -->
+      <ion-row>
+        <ion-col size="12">
+          <ion-button (click)="logout()" expand="block" fill="solid" shape="undefined" size="large" color="dark">
+            logout
+          </ion-button>          
+        </ion-col>
+      </ion-row>
+    </ion-col></ion-row>
+  </ion-grid>
 </ion-content>

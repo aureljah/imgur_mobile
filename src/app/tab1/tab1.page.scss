@@ -1,5 +1,5 @@
-ion-content ion-toolbar {
-  --background: translucent;
+ion-content {
+  --ion-background-color: rgb(145, 165, 198);
 }
 
 ion-content {
@@ -7,5 +7,6 @@ ion-content {
     ion-card-content {
       padding: 0;
     }
+    --ion-background-color: white;
   }
 }
