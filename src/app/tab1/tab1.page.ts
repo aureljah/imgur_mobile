@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ImgurApiService } from '../services/imgur-api.service';
 import { accountInfo } from '../models/accountInfo';
 import { imageInfo } from '../models/imageInfo';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab1',
@@ -12,7 +13,8 @@ import { imageInfo } from '../models/imageInfo';
 export class Tab1Page {
 
   constructor(
-    public imgurApiService: ImgurApiService
+    public imgurApiService: ImgurApiService,
+    private router: Router
   ) {}
 
   ionViewWillEnter() {
@@ -21,5 +23,13 @@ export class Tab1Page {
 
   seeCard(image: imageInfo) {
     console.log("seeCard: ", image);
+
+    let navigationExtras: NavigationExtras = {
+      state: {
+        image: image
+      }
+    };
+
+    this.router.navigate(['post'], navigationExtras);
   }
 }

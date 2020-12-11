@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar id="post_nav_bar" color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button>Back</ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-wrap">{{image.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-img [src]="image.link"></ion-img>
+  <ion-label><h1 class="ion-text-left">{{image.title}}</h1></ion-label>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar id="post_toolbar" color="dark">
+    <ion-grid class="ion-no-padding" class="ion-no-margin" color="dark">
+      <ion-row color="dark">
+        <ion-col class="ion-no-padding" color="dark"></ion-col>
+        <ion-col class="ion-no-padding" color="dark">
+          <ion-item class="ion-text-left" lines="none" color="dark">
+            <!-- Up vote -->
+            <ion-icon name="arrow-up-circle-outline" size="large"></ion-icon>
+          </ion-item>
+        </ion-col>
+        <ion-col class="ion-no-padding" color="dark">
+          <ion-item lines="none" color="dark">
+            <!-- Down vote -->
+            <ion-icon name="arrow-down-circle-outline" size="large"></ion-icon>
+          </ion-item>
+        </ion-col>
+        <ion-col class="ion-no-padding" color="dark"color="dark">
+          <ion-item lines="none" color="dark">
+            <!-- Share -->
+            <ion-icon name="share-social-outline" size="large"></ion-icon>
+          </ion-item>
+        </ion-col>
+        <ion-col class="ion-no-padding" color="dark"></ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>
+
