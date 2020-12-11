@@ -71,9 +71,9 @@ export class ImgurApiService {
     self.account_info = new accountInfo(self.account_username, res_account);
     console.log(self.account_info);
 
-    await self.reload_all_viral_images();
+    await self.reload_all_viral_images().catch(() => {});
 
-    await self.reload_account_images();
+    await self.reload_account_images().catch(() => {});
   }
 
   login() {

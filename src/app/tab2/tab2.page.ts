@@ -4,6 +4,7 @@ import { ImgurApiService } from '../services/imgur-api.service';
 import { PhotoService } from '../services/photo.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { imageInfo } from '../models/imageInfo';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab2',
@@ -11,8 +12,10 @@ import { imageInfo } from '../models/imageInfo';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
+  display_list: imageInfo[] = [];
 
   constructor(public photoService: PhotoService,
+            private router: Router,
             public imgurApiService: ImgurApiService,
             public alertController: AlertController,
             public actionSheetController: ActionSheetController,
@@ -24,11 +27,22 @@ export class Tab2Page {
   }
 
   ionViewWillEnter() {
-    this.imgurApiService.reload_account_images();
+    this.display_list = this.imgurApiService.account_images;
+    this.imgurApiService.reload_account_images().then((res) => {
+      this.display_list = this.imgurApiService.account_images;
+    });
   }
 
   seeCard(image: imageInfo) {
     console.log("seeCard: ", image);
+
+    let navigationExtras: NavigationExtras = {
+      state: {
+        image: image
+      }
+    };
+
+    this.router.navigate(['post'], navigationExtras);
   }
 
   /*public async showActionSheet(photo, position: number) {
@@ -130,7 +144,9 @@ export class Tab2Page {
             }
 
             self.imgurApiService.request_upload_image(img, "base64", data.img_name, data.title, data.description).then(() => {
-              self.imgurApiService.reload_account_images();
+              self.imgurApiService.reload_account_images().then((res) => {
+                self.display_list = self.imgurApiService.account_images;
+              });
             });
           }
         },
