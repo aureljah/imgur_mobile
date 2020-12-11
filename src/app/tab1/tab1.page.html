@@ -19,28 +19,32 @@
               <ion-item class="ion-text-left" lines="none">
                 <!-- Up vote -->
                 <ion-icon name="arrow-up-circle-outline" size="small"></ion-icon>
-                <ion-label>{{image.ups}}</ion-label>
+                <ion-label *ngIf="image.ups">{{image.ups}}</ion-label>
+                <ion-label *ngIf="!image.ups">0</ion-label>
               </ion-item>
             </ion-col>
             <ion-col class="ion-no-padding">
               <ion-item lines="none">
                 <!-- Down vote -->
                 <ion-icon name="arrow-down-circle-outline" size="small"></ion-icon>
-                <ion-label>{{image.downs}}</ion-label>
+                <ion-label *ngIf="image.downs">{{image.downs}}</ion-label>
+                <ion-label *ngIf="!image.downs">0</ion-label>
               </ion-item>
             </ion-col>
             <ion-col class="ion-no-padding">
               <ion-item lines="none">
                 <!-- Comments -->
                 <ion-icon name="chatbubble-ellipses-outline" size="small"></ion-icon>
-                <ion-label>{{image.comment_count}}</ion-label>
+                <ion-label *ngIf="image.comment_count">{{image.comment_count}}</ion-label>
+                <ion-label *ngIf="!image.comment_count">0</ion-label>
               </ion-item>
             </ion-col>
             <ion-col class="ion-no-padding">
               <ion-item lines="none">
                 <!-- Views -->
                 <ion-icon name="eye-outline" size="small"></ion-icon>
-                <ion-label>{{image.views}}</ion-label>
+                <ion-label *ngIf="image.views">{{image.views}}</ion-label>
+                <ion-label *ngIf="!image.views">0</ion-label>
               </ion-item>
             </ion-col>
           </ion-row>
