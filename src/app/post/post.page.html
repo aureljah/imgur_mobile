@@ -9,8 +9,10 @@
 
 <ion-content>
   <ion-img [src]="image.link"></ion-img>
+
+  <ion-label><h3 id="info_title">Image infos</h3></ion-label>
   <ion-card color="dark">
-    <ion-card-header>
+    <ion-card-header id="info_header">
       <ion-card-title><h2 class="ion-text-center">{{image.title}}</h2></ion-card-title>
       <ion-card-subtitle><p class="ion-text-justify">{{image.description}}</p></ion-card-subtitle>
     </ion-card-header>
@@ -19,7 +21,10 @@
         <ion-row>
           <ion-col>
             <ion-row>
-              <ion-col size="12" class="ion-text-center"><h3>{{image.ups}}</h3></ion-col>
+              <ion-col size="12" class="ion-text-center">
+                <h3 *ngIf="image.ups" >{{image.ups}}</h3>
+                <h3 *ngIf="!image.ups" >0</h3>
+              </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="12" class="ion-text-center"><p class="image_numbers_label">Up votes</p></ion-col>
@@ -28,7 +33,10 @@
 
           <ion-col>
             <ion-row>
-              <ion-col size="12" class="ion-text-center"><h3>{{image.downs}}</h3></ion-col>
+              <ion-col size="12" class="ion-text-center">
+                <h3 *ngIf="image.downs">{{image.downs}}</h3>
+                <h3 *ngIf="!image.downs">0</h3>
+              </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="12" class="ion-text-center"><p class="image_numbers_label">Down votes</p></ion-col>
@@ -39,7 +47,10 @@
         <ion-row>
           <ion-col>
             <ion-row>
-              <ion-col size="12" class="ion-text-center"><h3>{{image.comment_count}}</h3></ion-col>
+              <ion-col size="12" class="ion-text-center">
+                <h3 *ngIf="image.comment_count">{{image.comment_count}}</h3>
+                <h3 *ngIf="!image.comment_count">0</h3>
+              </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="12" class="ion-text-center"><p class="image_numbers_label">Comments</p></ion-col>
@@ -48,7 +59,10 @@
 
           <ion-col>
             <ion-row>
-              <ion-col size="12" class="ion-text-center"><h3>{{image.views}}</h3></ion-col>
+              <ion-col size="12" class="ion-text-center">
+                <h3 *ngIf="!image.views">{{image.views}}</h3>
+                <h3 *ngIf="image.views">0</h3>
+              </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="12" class="ion-text-center"><p class="image_numbers_label">Views</p></ion-col>
@@ -58,6 +72,21 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
+
+  <ion-label *ngIf="comments.length > 0"><h3 id="comment_title">Top Comments</h3></ion-label>
+  <ion-list id="post_comment_list">
+    <div *ngFor="let comment of comments" >
+      <ion-card color="dark" >
+        <ion-card-header>
+          <ion-label style="text-align: left; color: rgba(255, 255, 255, 0.7);"><p>{{comment.datetime | date : "MMM dd, yyyy HH:mm" }}</p></ion-label>
+          <ion-label style="text-align: left; color: rgba(255, 255, 255, 0.7);"><p>{{comment.author}}</p></ion-label>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label><p id="comment_text">{{comment.comment}}</p></ion-label>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-list>          
 </ion-content>
 
 <ion-footer>
