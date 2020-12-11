@@ -96,7 +96,7 @@ export class ImgurApiService {
   authorize_account() {
     return new Promise<any>((resolve, reject) => {
       let resolved = false;
-      let browser = this.iab.create("https://api.imgur.com/oauth2/authorize?client_id="+client_id+"&response_type=token");
+      let browser = this.iab.create("https://api.imgur.com/oauth2/authorize?client_id="+client_id+"&response_type=token", "_blank", "clearcache=yes");
       let sub = browser.on("loadstart").subscribe((params) => {
         console.log("loadstart: params: ", params);
         if (params && params.url && params.url.includes("access_token")) {
