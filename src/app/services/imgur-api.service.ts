@@ -171,12 +171,12 @@ export class ImgurApiService {
   async reload_all_viral_images() {
     this.viral_images = [];
     this.viral_images_page = 0;
-    this.load_viral_images();
+    await this.load_viral_images();
   }
 
-  load_more_viral_images() {
+  async load_more_viral_images() {
     this.viral_images_page += 1;
-    this.load_viral_images();
+    await this.load_viral_images();
   }
 
   private async load_viral_images() {
@@ -229,13 +229,31 @@ export class ImgurApiService {
   }
 
   request_get_viral_images(page: number = 0) {
+    let auth = {Authorization: "Client-ID " + client_id};
+    if (this.isConnected()) {
+      auth = {Authorization: "Bearer " + this.access_token};
+    }
     return new Promise<any>((resolve, reject) => {
-        this.http.get("https://api.imgur.com/3/gallery/hot/viral/day/" + page.toString(), {headers: {Authorization: "Client-ID " + client_id}}).pipe(
+        this.http.get("https://api.imgur.com/3/gallery/hot/viral/day/" + page.toString(), {headers: auth}).pipe(
         ).subscribe(response => {
             resolve(response);
         }, error => {
             reject(error);
         });
+    });
+  }
+
+  request_vote_image(img_id: string, vote: string) {
+    if (vote !== 'up' && vote !== 'down' && vote !== 'veto') {
+      return undefined;
+    }
+    return new Promise<any>((resolve, reject) => {
+      this.http.post("https://api.imgur.com/3/gallery/"+img_id+"/vote/"+vote, {}, {headers: {Authorization: "Bearer " + this.access_token}}).pipe(
+      ).subscribe(response => {
+        resolve(response);
+      }, error => {
+        reject(error);
+      });
     });
   }
 

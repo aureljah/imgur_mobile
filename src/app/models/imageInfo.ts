@@ -9,7 +9,7 @@ export class imageInfo {
     views: number;
     comment_count: number;
 
-    vote: boolean; // if connected user has voted
+    vote: string; // if connected user has voted
     animated: boolean = false; // true if contains video
     images: {
         link: string;

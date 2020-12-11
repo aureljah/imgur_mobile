@@ -31,6 +31,30 @@ export class PostPage implements OnInit {
     });
   }
 
+  voteUndo() {
+    this.vote('veto');
+  }
+
+  voteDown() {
+    this.vote('down');
+  }
+
+  voteUp() {
+    this.vote('up');
+  }
+
+  vote(vote) {
+    this.imgurApiService.request_vote_image(this.image.id, vote).then((res) => {
+      console.log("request_vote_image: res: ", res);
+    });
+    if (vote === 'veto') {
+      this.image.vote = null;
+    }
+    else {
+      this.image.vote = vote;
+    }
+  }
+
   async share() {
     const self = this;
     let alert = await this.alertController.create({

@@ -66,15 +66,21 @@
       <ion-row color="dark">
         <ion-col class="ion-no-padding" color="dark"></ion-col>
         <ion-col class="ion-no-padding" color="dark">
-          <ion-item class="ion-text-left" lines="none" color="dark">
-            <!-- Up vote -->
+          <!-- Up vote -->
+          <ion-item *ngIf="image.vote !== 'up'" class="ion-text-left" lines="none" color="dark" (click)="voteUp()">
             <ion-icon name="arrow-up-circle-outline" size="large"></ion-icon>
+          </ion-item>
+          <ion-item *ngIf="image.vote === 'up'" class="ion-text-left" lines="none" color="dark" (click)="voteUndo()">
+            <ion-icon name="arrow-up-circle" size="large" class="voted"></ion-icon>
           </ion-item>
         </ion-col>
         <ion-col class="ion-no-padding" color="dark">
-          <ion-item lines="none" color="dark">
-            <!-- Down vote -->
+          <!-- Down vote -->
+          <ion-item *ngIf="image.vote !== 'down'" lines="none" color="dark" (click)="voteDown()">
             <ion-icon name="arrow-down-circle-outline" size="large"></ion-icon>
+          </ion-item>
+          <ion-item *ngIf="image.vote === 'down'" lines="none" color="dark" (click)="voteUndo()">
+            <ion-icon name="arrow-down-circle" size="large" class="voted"></ion-icon>
           </ion-item>
         </ion-col>
         <ion-col class="ion-no-padding" color="dark"color="dark">
