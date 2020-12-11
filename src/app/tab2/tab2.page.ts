@@ -56,7 +56,7 @@ export class Tab2Page {
   async addPicture() {
     const self = this;
     let actionSheet = await self.actionSheetController.create({
-        header: "Ajouter photo",
+        header: "Add picture",
         buttons: [
             /*{
                 text: "Gallerie (multiple)",
@@ -74,7 +74,7 @@ export class Tab2Page {
                 }
             },
             {
-                text: "Gallerie",
+                text: "Gallery",
                 handler: () => {
                     self.photoService.takePicture(true, self.camera.PictureSourceType.PHOTOLIBRARY).then((img) => {
                       self.alert_upload(img);
@@ -82,7 +82,7 @@ export class Tab2Page {
                 }
             },
             {
-                text: "Annuler",
+                text: "Cancel",
                 role: 'cancel'
             }
         ]
@@ -98,7 +98,7 @@ export class Tab2Page {
         {
           name: 'title',
           type: 'text',
-          placeholder: 'Titre'
+          placeholder: 'Title'
         },
         {
           name: 'description',
@@ -108,12 +108,12 @@ export class Tab2Page {
         {
           name: 'img_name',
           type: 'text',
-          placeholder: "Nom de l'image"
+          placeholder: "Picture name"
         },
       ],
       buttons: [
         {
-          text: "Upload image",
+          text: "Upload picture",
           handler: (data) => {
             console.log("alert_upload: data: ", data);
             if (!data.title) {
@@ -135,7 +135,7 @@ export class Tab2Page {
           }
         },
         {
-          text: "Annuler",
+          text: "Cencal",
           role: 'Cancel'
         }
       ]
