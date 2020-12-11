@@ -4,8 +4,6 @@ export class imageInfo {
     account_url: string; // username who posted it
     title: string;
     description: string;
-
-    id: string;
     ups: number;
     downs: number;
     views: number;
