@@ -189,7 +189,7 @@ export class ImgurApiService {
         let elem = gallery.data[i];
         let img = new imageInfo(elem);
         if (img.animated !== true) {
-          img.title = debug_count.toString();
+          //img.title = debug_count.toString();
           debug_count += 1;
           //img_list.push(img);
           this.viral_images.push(img);
