@@ -9,7 +9,55 @@
 
 <ion-content>
   <ion-img [src]="image.link"></ion-img>
-  <ion-label><h1 class="ion-text-left">{{image.title}}</h1></ion-label>
+  <ion-card color="dark">
+    <ion-card-header>
+      <ion-card-title><h2 class="ion-text-center">{{image.title}}</h2></ion-card-title>
+      <ion-card-subtitle><p class="ion-text-justify">{{image.description}}</p></ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-row>
+              <ion-col size="12" class="ion-text-center"><h3>{{image.ups}}</h3></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" class="ion-text-center"><p class="image_numbers_label">Up votes</p></ion-col>
+            </ion-row>
+          </ion-col>
+
+          <ion-col>
+            <ion-row>
+              <ion-col size="12" class="ion-text-center"><h3>{{image.downs}}</h3></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" class="ion-text-center"><p class="image_numbers_label">Down votes</p></ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-row>
+              <ion-col size="12" class="ion-text-center"><h3>{{image.comment_count}}</h3></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" class="ion-text-center"><p class="image_numbers_label">Comments</p></ion-col>
+            </ion-row>
+          </ion-col>
+
+          <ion-col>
+            <ion-row>
+              <ion-col size="12" class="ion-text-center"><h3>{{image.views}}</h3></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12" class="ion-text-center"><p class="image_numbers_label">Views</p></ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
 
 <ion-footer>

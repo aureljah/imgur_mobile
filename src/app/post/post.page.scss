@@ -2,8 +2,18 @@ ion-content {
     --ion-background-color: rgb(145, 165, 198);
 }
 
+ion-card {
+    ion-card-header {
+        border-bottom: 1px solid rgb(145, 165, 198) !important;
+    }
+}
 
+h3 {
+    color: white;
+    font-weight: bold;
+    font-size: large;
+}
 
-ion-toolbar {
-    --ion-background-color: rgb(145, 165, 198);
+.image_numbers_label {
+    margin-top: -5px;
 }

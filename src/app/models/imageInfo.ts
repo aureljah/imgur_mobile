@@ -5,6 +5,7 @@ export class imageInfo {
     title: string;
     description: string;
 
+    id: string;
     ups: number;
     downs: number;
     views: number;
