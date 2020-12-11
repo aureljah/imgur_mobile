@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { File } from '@ionic-native/file/ngx';
 
 @Injectable({
@@ -15,7 +14,6 @@ export class PhotoService {
     public storage: Storage,
     public camera: Camera,
     public file: File,
-    public imagePicker: ImagePicker
     ) {
    }
 

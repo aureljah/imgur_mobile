@@ -13,7 +13,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
@@ -27,7 +26,6 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     Platform,
     SplashScreen,
     HttpClientModule,
-    ImagePicker,
     Camera,
     File,
     InAppBrowser,
