@@ -136,21 +136,16 @@ export class Tab2Page {
               self.genericAlert("Error", "Title is required")
               return;
             }
-            if (!data.description) {
-              self.genericAlert("Error", "Description is required")
-              return;
-            }
-            if (!data.img_name) {
+            /*if (!data.img_name) {
               self.genericAlert("Error", "An image name is required")
               return;
-            }
+            }*/
 
             let progress = 5;
             self.localNotifications.schedule({
               id: 1,
               text: 'Your image is being uploaded..',
               progressBar: { value: progress },
-              silent: true
             });
             let inter = setInterval(() => {
               if (progress < 90) {
@@ -163,9 +158,9 @@ export class Tab2Page {
                 id: 1,
                 text: 'Your image is being uploaded..',
                 progressBar: { value: progress },
-                silent: true
               });
             }, 500);
+
             self.imgurApiService.request_upload_image(img, "base64", data.img_name, data.title, data.description).then(() => {
               self.imgurApiService.reload_account_images().then((res) => {
                 clearInterval(inter);
@@ -180,7 +175,7 @@ export class Tab2Page {
           }
         },
         {
-          text: "Cencal",
+          text: "Cancel",
           role: 'Cancel'
         }
       ]
