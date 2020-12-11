@@ -18,7 +18,7 @@ ion-content {
   margin-top: 5%;
   text-align: center;
   font-size: 200%;
-  color: black;
+  color: white;
   font-weight: 500;
 }
 
@@ -28,12 +28,11 @@ h2 {
   margin-bottom: 5%;
   text-align: center;
   font-size: 120%;
-  color: rgba(0, 0, 0, 0.3);
   font-weight: 100;
 }
 
 ion-card {
-  background-color: white;
+  background-color: #222428;
   padding-left: 5%;
   padding-right: 5%;
   padding-bottom: 5%;
@@ -41,14 +40,11 @@ ion-card {
 
 h3 {
   font-size: 120%;
-  color: rgb(145, 165, 198);
   font-weight: bold;
   margin-top: 5%;
+  color: white;
 }
 
-p {
-  color: rgba(0, 0, 0, 0.5);
-}
 
 ion-button {
   margin-left: 10px;

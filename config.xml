@@ -3,7 +3,7 @@
     <name>Imgur mobile</name>
     <description>Une petite application pour gèerer ses photos sur imgur.</description>
     <author email="aurelien.olibe@epitech.eu" href="http://ionicframework.com/">Aurélien Olibé - Francois Bourgart</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
