@@ -42,7 +42,7 @@ export class HomePage implements OnInit {
     await loading.present();
 
     if (!this.platform.is("cordova")) {
-      await this.imgurApiService.load_viral_images();
+      await this.imgurApiService.reload_all_viral_images();
       await loading.dismiss();
       this.router.navigate([""]);
       return;

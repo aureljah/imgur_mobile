@@ -17,6 +17,7 @@ export class ImgurApiService {
   account_username: string = undefined;
   account_info: accountInfo = undefined;
   viral_images: imageInfo[] = [];
+  viral_images_page: number = 0;
   account_images: imageInfo[] = [];
 
   constructor(
@@ -70,7 +71,7 @@ export class ImgurApiService {
     self.account_info = new accountInfo(self.account_username, res_account);
     console.log(self.account_info);
 
-    self.load_viral_images();
+    self.reload_all_viral_images();
 
     self.reload_account_images();
   }
@@ -167,19 +168,35 @@ export class ImgurApiService {
     return value;
   }
 
-  async load_viral_images(page: number = 0) {
-    let gallery = await this.request_get_viral_images(page);
+  async reload_all_viral_images() {
+    this.viral_images = [];
+    this.viral_images_page = 0;
+    this.load_viral_images();
+  }
+
+  load_more_viral_images() {
+    this.viral_images_page += 1;
+    this.load_viral_images();
+  }
+
+  private async load_viral_images() {
+    let debug_count = this.viral_images.length;
+    let gallery = await this.request_get_viral_images(this.viral_images_page);
     console.log("request_get_viral_images: res: ", gallery);
     if (gallery && gallery.data) {
-      let img_list: imageInfo[] = [];
+      //let img_list: imageInfo[] = [];
       for (let i = 0 ; i < gallery.data.length ; i++) {
         let elem = gallery.data[i];
         let img = new imageInfo(elem);
         if (img.animated !== true) {
-          img_list.push(img);
+          img.title = debug_count.toString();
+          debug_count += 1;
+          //img_list.push(img);
+          this.viral_images.push(img);
         }
       }
-      this.viral_images = img_list;
+      console.log("final_count loaded: ", debug_count);
+      //this.viral_images = img_list;
     }
   }
 

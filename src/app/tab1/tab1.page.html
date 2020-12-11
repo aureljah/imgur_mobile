@@ -1,6 +1,13 @@
 <ion-content>
-  <div class="list-image" *ngFor="let image of imgurApiService.viral_images">
-    <ion-card (click)="seeCard(image)">
+  <ion-infinite-scroll threshold="100%" position="top" [disabled]="max_up_scroll" (ionInfinite)="loadMore($event, false)">
+    <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more images...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-list class="list-image">
+    <ion-card *ngFor="let image of display_list" (click)="seeCard(image)">
       <img [src]="image.link" />
       <ion-card-header>
         <ion-card-title>{{image.title}}</ion-card-title>
@@ -40,7 +47,13 @@
         </ion-grid>
       </ion-card-content>
     </ion-card>
-  </div>
+  </ion-list>
 
+  <ion-infinite-scroll threshold="100%" position="bottom" (ionInfinite)="loadMore($event, true)">
+    <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
   
 </ion-content>

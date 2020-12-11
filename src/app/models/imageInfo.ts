@@ -1,4 +1,5 @@
 export class imageInfo {
+    id: string;
     link: string;
     account_url: string; // username who posted it
     title: string;
@@ -18,6 +19,7 @@ export class imageInfo {
 
     constructor(obj: any = {}) {
         if (obj) {
+            this.id = obj.id;
             this.link = obj.link;
             this.account_url = obj.account_url;
             this.title = obj.title;
