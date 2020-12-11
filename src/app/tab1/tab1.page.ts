@@ -27,8 +27,18 @@ export class Tab1Page {
   ) {}
 
   ionViewWillEnter() {
+    const self = this;
     if (this.display_list.length < this.page_size) {
       this.display_list = this.imgurApiService.viral_images.slice(0, this.page_size);
+    }
+
+    if (this.display_list.length < 1 && this.imgurApiService.viral_images.length < 1) {
+      let interval = setInterval(() => {
+        if (self.imgurApiService.viral_images.length > 0) {
+          self.display_list = self.imgurApiService.viral_images.slice(0, self.page_size);
+          clearInterval(interval);
+        }
+      }, 500);
     }
   }
 
