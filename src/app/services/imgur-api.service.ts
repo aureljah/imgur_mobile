@@ -54,7 +54,7 @@ export class ImgurApiService {
         this.access_token = token;
         this.account_username = username;
 
-        this.onLoginTask();
+        await this.onLoginTask();
         return true;
       }
       return false;
@@ -71,9 +71,9 @@ export class ImgurApiService {
     self.account_info = new accountInfo(self.account_username, res_account);
     console.log(self.account_info);
 
-    self.reload_all_viral_images();
+    await self.reload_all_viral_images();
 
-    self.reload_account_images();
+    await self.reload_account_images();
   }
 
   login() {
